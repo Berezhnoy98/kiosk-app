@@ -1,0 +1,45 @@
+.idle-screen {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  overflow: hidden;
+  display: grid;
+  place-items: center;
+  background: #000;
+  cursor: pointer;
+  touch-action: manipulation;
+  user-select: none;
+}
+
+.idle-screen__video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  background: #000;
+}
+
+.idle-screen__hint {
+  position: absolute;
+  right: 24px;
+  bottom: 24px;
+  padding: 10px 16px;
+  border-radius: 12px;
+  background: rgb(0 0 0 / 55%);
+  color: rgb(255 255 255 / 85%);
+  font-size: 14px;
+  opacity: 0;
+  transition: opacity 200ms ease;
+}
+
+.idle-screen:hover .idle-screen__hint,
+.idle-screen:focus-within .idle-screen__hint {
+  opacity: 1;
+}
+
+@media (max-width: 600px) {
+  .idle-screen__hint {
+    right: 16px;
+    bottom: 16px;
+    font-size: 13px;
+  }
+}

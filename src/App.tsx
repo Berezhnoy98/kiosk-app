@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import type { Screen } from './types/kiosk';
 import { ScheduleScreen } from './screens/ScheduleScreen/ScheduleScreen';
 import { NewsScreen } from './screens/NewsScreen/NewsScreen';
@@ -6,9 +6,53 @@ import { HomeScreen } from './screens/HomeScreen/HomeScreen';
 import { GalleryScreen } from './screens/GalleryScreen/GalleryScreen';
 import { VideoScreen } from './screens/VideoScreen/VideoScreen';
 import { CanteenScreen } from './screens/CanteenScreen/CanteenScreen';
+import { IdleScreen } from './screens/IdleScreen/IdleScreen';
+
+const IDLE_TIMEOUT = 30_000;
 
 function App() {
   const [screen, setScreen] = useState<Screen>('home');
+  const [isIdle, setIsIdle] = useState(false);
+
+  const resetIdle = useCallback(() => {
+    setIsIdle(false);
+    setScreen('home');
+  }, []);
+
+  useEffect(() => {
+    if (isIdle) {
+      return;
+    }
+
+    let timer = window.setTimeout(() => {
+      setIsIdle(true);
+    }, IDLE_TIMEOUT);
+
+    const resetTimer = () => {
+      window.clearTimeout(timer);
+
+      timer = window.setTimeout(() => {
+        setIsIdle(true);
+      }, IDLE_TIMEOUT);
+    };
+
+    window.addEventListener('pointerdown', resetTimer);
+    window.addEventListener('keydown', resetTimer);
+    window.addEventListener('touchstart', resetTimer);
+    window.addEventListener('mousemove', resetTimer);
+
+    return () => {
+      window.clearTimeout(timer);
+      window.removeEventListener('pointerdown', resetTimer);
+      window.removeEventListener('keydown', resetTimer);
+      window.removeEventListener('touchstart', resetTimer);
+      window.removeEventListener('mousemove', resetTimer);
+    };
+  }, [isIdle]);
+
+  if (isIdle) {
+    return <IdleScreen onExit={resetIdle} />;
+  }
 
   if (screen === 'schedule') {
     return (
@@ -47,18 +91,6 @@ function App() {
       <CanteenScreen
         onNavigateHome={() => setScreen('home')}
       />
-    );
-  }
-
-  if (screen !== 'home') {
-    return (
-      <div style={{ padding: 40 }}>
-        <button onClick={() => setScreen('home')}>
-          ← На главную
-        </button>
-
-        <h1>{screen}</h1>
-      </div>
     );
   }
 

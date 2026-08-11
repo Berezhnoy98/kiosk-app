@@ -8,17 +8,27 @@ export interface VideoItem {
 
 export const videos: VideoItem[] = [
   {
-    id: '1',
-    title: 'Школьная жизнь',
+    id: 'webinar-1',
+    title: 'Вебинар №1',
     date: '11 августа 2026',
     description:
-      'Видео о жизни нашей школы и школьных мероприятиях.',
+      'Видеоматериалы для школьного информационного киоска.',
+    videoUrl: '/videos/webinar-1.mp4',
   },
   {
-    id: '2',
-    title: 'Школьные мероприятия',
-    date: '8 августа 2026',
+    id: 'webinar-2',
+    title: 'Вебинар №2',
+    date: '11 августа 2026',
     description:
-      'Подборка материалов о событиях и мероприятиях школы.',
+      'Видеоматериалы для школьного информационного киоска.',
+    videoUrl: '/videos/webinar-2.mp4',
+  },
+  {
+    id: 'webinar-3',
+    title: 'Вебинар №3',
+    date: '11 августа 2026',
+    description:
+      'Видеоматериалы для школьного информационного киоска.',
+    videoUrl: '/videos/webinar-3.mp4',
   },
 ];
