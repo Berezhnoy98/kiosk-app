@@ -32,7 +32,16 @@ export function IdleScreen({ onExit }: IdleScreenProps) {
     };
 
     void enterFullscreen();
+
+    return () => {
+      if (document.fullscreenElement) {
+        void document.exitFullscreen().catch(() => {
+          // Fullscreen may already be closed by the browser or user.
+        });
+      }
+    };
   }, []);
+
 
   useEffect(() => {
     const handleInteraction = () => {
