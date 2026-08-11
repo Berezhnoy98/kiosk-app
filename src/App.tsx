@@ -7,8 +7,7 @@ import { GalleryScreen } from './screens/GalleryScreen/GalleryScreen';
 import { VideoScreen } from './screens/VideoScreen/VideoScreen';
 import { CanteenScreen } from './screens/CanteenScreen/CanteenScreen';
 import { IdleScreen } from './screens/IdleScreen/IdleScreen';
-
-const IDLE_TIMEOUT = 30_000;
+import { KIOSK_IDLE_TIMEOUT } from './config/kiosk';
 
 function App() {
   const [screen, setScreen] = useState<Screen>('home');
@@ -26,27 +25,25 @@ function App() {
 
     let timer = window.setTimeout(() => {
       setIsIdle(true);
-    }, IDLE_TIMEOUT);
+    }, KIOSK_IDLE_TIMEOUT);
 
     const resetTimer = () => {
       window.clearTimeout(timer);
 
       timer = window.setTimeout(() => {
         setIsIdle(true);
-      }, IDLE_TIMEOUT);
+      }, KIOSK_IDLE_TIMEOUT);
     };
 
     window.addEventListener('pointerdown', resetTimer);
     window.addEventListener('keydown', resetTimer);
     window.addEventListener('touchstart', resetTimer);
-    window.addEventListener('mousemove', resetTimer);
 
     return () => {
       window.clearTimeout(timer);
       window.removeEventListener('pointerdown', resetTimer);
       window.removeEventListener('keydown', resetTimer);
       window.removeEventListener('touchstart', resetTimer);
-      window.removeEventListener('mousemove', resetTimer);
     };
   }, [isIdle]);
 
