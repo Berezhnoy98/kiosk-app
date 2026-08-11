@@ -5,6 +5,7 @@ import { NewsScreen } from './screens/NewsScreen/NewsScreen';
 import { HomeScreen } from './screens/HomeScreen/HomeScreen';
 import { GalleryScreen } from './screens/GalleryScreen/GalleryScreen';
 import { VideoScreen } from './screens/VideoScreen/VideoScreen';
+import { CanteenScreen } from './screens/CanteenScreen/CanteenScreen';
 
 function App() {
   const [screen, setScreen] = useState<Screen>('home');
@@ -36,6 +37,14 @@ function App() {
   if (screen === 'video') {
     return (
       <VideoScreen
+        onNavigateHome={() => setScreen('home')}
+      />
+    );
+  }
+
+  if (screen === 'canteen') {
+    return (
+      <CanteenScreen
         onNavigateHome={() => setScreen('home')}
       />
     );

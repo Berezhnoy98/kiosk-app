@@ -15,6 +15,7 @@ export interface NewsItem {
 
 export interface ScheduleItem {
   time: string;
+  endTime: string;
   subject: string;
   className: string;
   room: string;
@@ -30,10 +31,18 @@ export interface MenuSection {
   items: MenuItem[];
 }
 
-export interface ScheduleItem {
-  time: string;
-  endTime: string;
-  subject: string;
-  className: string;
-  room: string;
+export type MenuDayId =
+  | 'monday'
+  | 'tuesday'
+  | 'wednesday'
+  | 'thursday'
+  | 'friday'
+  | 'saturday';
+
+export interface MenuDay {
+  id: MenuDayId;
+  shortLabel: string;
+  label: string;
+  date: string;
+  sections: MenuSection[];
 }

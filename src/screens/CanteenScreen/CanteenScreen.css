@@ -1,0 +1,333 @@
+.canteen-screen {
+  min-height: 100svh;
+  box-sizing: border-box;
+  padding: 28px 32px 36px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  background: var(--bg);
+}
+
+.canteen-screen__header {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  gap: 20px;
+}
+
+.canteen-screen__home-button {
+  justify-self: start;
+  min-height: 56px;
+  padding: 0 20px;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  background: var(--bg);
+  color: var(--text-h);
+  font: inherit;
+  font-size: 18px;
+  font-weight: 600;
+  cursor: pointer;
+  transition:
+    background-color 0.15s ease,
+    border-color 0.15s ease,
+    transform 0.15s ease;
+}
+
+.canteen-screen__home-button:hover {
+  background: var(--accent-bg);
+  border-color: var(--accent-border);
+}
+
+.canteen-screen__home-button:active {
+  transform: translateY(1px);
+}
+
+.canteen-screen__home-icon {
+  width: 24px;
+  height: 24px;
+  flex: 0 0 auto;
+}
+
+.canteen-screen__title {
+  text-align: center;
+}
+
+.canteen-screen__title h1 {
+  margin: 0;
+  font-size: 42px;
+}
+
+.canteen-screen__title p {
+  margin-top: 6px;
+  color: var(--text);
+  font-size: 18px;
+}
+
+.canteen-screen__day-selector {
+  display: grid;
+  grid-template-columns: 56px 1fr 56px;
+  align-items: center;
+  gap: 12px;
+}
+
+.canteen-screen__day-list {
+  display: grid;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.canteen-screen__day-button,
+.canteen-screen__day-arrow,
+.canteen-screen__today-button {
+  min-height: 58px;
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  background: var(--bg);
+  color: var(--text-h);
+  font: inherit;
+  font-weight: 700;
+  cursor: pointer;
+  transition:
+    background-color 0.15s ease,
+    border-color 0.15s ease,
+    transform 0.15s ease;
+}
+
+.canteen-screen__day-button:hover,
+.canteen-screen__day-arrow:hover {
+  background: var(--accent-bg);
+  border-color: var(--accent-border);
+}
+
+.canteen-screen__day-button:active,
+.canteen-screen__day-arrow:active,
+.canteen-screen__today-button:active {
+  transform: translateY(1px);
+}
+
+.canteen-screen__day-button--selected {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: #fff;
+}
+
+.canteen-screen__day-button--selected:hover {
+  background: var(--accent);
+  border-color: var(--accent);
+}
+
+.canteen-screen__day-arrow {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+}
+
+.canteen-screen__chevron-icon {
+  width: 26px;
+  height: 26px;
+}
+
+.canteen-screen__today-button {
+  align-self: center;
+  min-height: 50px;
+  padding: 0 28px;
+  border-color: var(--accent-border);
+  background: var(--accent-bg);
+  color: var(--text-h);
+}
+
+.canteen-screen__today-button:hover {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: #fff;
+}
+
+.canteen-screen__content {
+  flex: 1;
+}
+
+.canteen-screen__sections {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 20px;
+}
+
+.canteen-screen__section {
+  overflow: hidden;
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  background: var(--bg);
+  box-shadow: var(--shadow);
+}
+
+.canteen-screen__section-header {
+  min-height: 78px;
+  padding: 0 24px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  border-bottom: 1px solid var(--border);
+  background: var(--accent-bg);
+}
+
+.canteen-screen__section-icon-wrap {
+  width: 46px;
+  height: 46px;
+  flex: 0 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 13px;
+  background: var(--bg);
+  color: var(--accent);
+}
+
+.canteen-screen__section-icon {
+  width: 28px;
+  height: 28px;
+}
+
+.canteen-screen__section-header h2 {
+  margin: 0;
+  color: var(--text-h);
+  font-size: 25px;
+  font-weight: 700;
+}
+
+.canteen-screen__items {
+  margin: 0;
+  padding: 8px 24px 18px;
+  list-style: none;
+}
+
+.canteen-screen__item {
+  min-height: 58px;
+  padding: 12px 0;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  border-bottom: 1px solid var(--border);
+  box-sizing: border-box;
+}
+
+.canteen-screen__item:last-child {
+  border-bottom: 0;
+}
+
+.canteen-screen__item-marker {
+  width: 9px;
+  height: 9px;
+  flex: 0 0 auto;
+  border-radius: 50%;
+  background: var(--accent);
+}
+
+.canteen-screen__item strong {
+  color: var(--text-h);
+  font-size: 20px;
+  line-height: 1.3;
+}
+
+.canteen-screen__item p {
+  margin-top: 4px;
+  color: var(--text);
+  font-size: 16px;
+}
+
+.canteen-screen__empty {
+  min-height: 260px;
+  padding: 32px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  text-align: center;
+}
+
+.canteen-screen__empty h2 {
+  margin: 0 0 8px;
+  color: var(--text-h);
+  font-size: 28px;
+}
+
+.canteen-screen__empty p {
+  color: var(--text);
+  font-size: 18px;
+}
+
+@media (max-width: 800px) {
+  .canteen-screen {
+    padding: 20px;
+  }
+
+  .canteen-screen__header {
+    grid-template-columns: 1fr;
+  }
+
+  .canteen-screen__home-button {
+    justify-self: stretch;
+    justify-content: center;
+  }
+
+  .canteen-screen__title h1 {
+    font-size: 36px;
+  }
+
+  .canteen-screen__day-selector {
+    grid-template-columns: 48px 1fr 48px;
+    gap: 8px;
+  }
+
+  .canteen-screen__day-list {
+    gap: 6px;
+  }
+
+  .canteen-screen__day-button {
+    min-height: 52px;
+    padding: 0 4px;
+  }
+
+  .canteen-screen__sections {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 520px) {
+  .canteen-screen {
+    padding: 16px;
+    gap: 18px;
+  }
+
+  .canteen-screen__day-selector {
+    grid-template-columns: 44px 1fr 44px;
+  }
+
+  .canteen-screen__day-list {
+    overflow-x: auto;
+    grid-template-columns: repeat(6, 58px);
+    scrollbar-width: none;
+  }
+
+  .canteen-screen__day-list::-webkit-scrollbar {
+    display: none;
+  }
+
+  .canteen-screen__section-header {
+    padding: 0 18px;
+  }
+
+  .canteen-screen__items {
+    padding-inline: 18px;
+  }
+
+  .canteen-screen__item strong {
+    font-size: 18px;
+  }
+}
