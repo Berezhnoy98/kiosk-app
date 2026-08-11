@@ -1,0 +1,20 @@
+{
+  "editor.formatOnSave": true,
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+
+  "editor.tabSize": 2,
+  "editor.insertSpaces": true,
+
+  "files.encoding": "utf8",
+  "files.eol": "\n",
+
+  "typescript.preferences.importModuleSpecifier": "relative",
+
+  "explorer.compactFolders": false,
+
+  "files.exclude": {
+    "**/.git": true,
+    "**/node_modules": true,
+    "**/dist": true
+  }
+}
