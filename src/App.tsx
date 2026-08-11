@@ -3,6 +3,7 @@ import type { Screen } from './types/kiosk';
 import { ScheduleScreen } from './screens/ScheduleScreen/ScheduleScreen';
 import { NewsScreen } from './screens/NewsScreen/NewsScreen';
 import { HomeScreen } from './screens/HomeScreen/HomeScreen';
+import { GalleryScreen } from './screens/GalleryScreen/GalleryScreen';
 
 function App() {
   const [screen, setScreen] = useState<Screen>('home');
@@ -18,6 +19,14 @@ function App() {
   if (screen === 'news') {
     return (
       <NewsScreen
+        onNavigateHome={() => setScreen('home')}
+      />
+    );
+  }
+
+  if (screen === 'gallery') {
+    return (
+      <GalleryScreen
         onNavigateHome={() => setScreen('home')}
       />
     );
