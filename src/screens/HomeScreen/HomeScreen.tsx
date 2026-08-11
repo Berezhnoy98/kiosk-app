@@ -118,9 +118,7 @@ function CanteenIcon() {
 }
 
 export function HomeScreen({ onNavigate }: HomeScreenProps) {
-  const [currentTime, setCurrentTime] = useState(() =>
-    new Date(),
-  );
+  const [currentTime, setCurrentTime] = useState(() => new Date());
 
   useEffect(() => {
     const timer = window.setInterval(() => {
@@ -151,8 +149,8 @@ export function HomeScreen({ onNavigate }: HomeScreenProps) {
         </div>
 
         <div className="home-screen__clock">
-  {formattedTime}
-</div>
+          {formattedTime}
+        </div>
       </header>
 
       <section className="home-screen__content">

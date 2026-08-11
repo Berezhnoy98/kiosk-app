@@ -1,22 +1,49 @@
 .kiosk-button {
+  box-sizing: border-box;
   min-height: 150px;
-  padding: 32px;
-  border: 0;
+  padding: 28px;
+  border: 1px solid rgb(255 255 255 / 90%);
   border-radius: 24px;
-  background: #ffffff;
+  background: rgb(255 255 255 / 92%);
   color: #172033;
-  font-size: clamp(1.5rem, 3vw, 2.5rem);
-  font-weight: 600;
+  font: inherit;
+  font-size: clamp(1.25rem, 2.4vw, 2rem);
+  font-weight: 700;
+  line-height: 1.2;
   cursor: pointer;
   touch-action: manipulation;
   user-select: none;
-  box-shadow: 0 8px 24px rgb(0 0 0 / 10%);
+  -webkit-tap-highlight-color: transparent;
+  box-shadow:
+    0 12px 30px rgb(35 52 72 / 10%),
+    0 2px 6px rgb(35 52 72 / 6%);
   transition:
     transform 120ms ease,
-    box-shadow 120ms ease;
+    box-shadow 120ms ease,
+    background-color 120ms ease;
+}
+
+.kiosk-button:hover {
+  background: #ffffff;
+  box-shadow:
+    0 16px 34px rgb(35 52 72 / 13%),
+    0 3px 8px rgb(35 52 72 / 7%);
+}
+
+.kiosk-button:focus-visible {
+  outline: 4px solid rgb(59 130 246 / 35%);
+  outline-offset: 4px;
 }
 
 .kiosk-button:active {
-  transform: scale(0.97);
-  box-shadow: 0 4px 12px rgb(0 0 0 / 10%);
+  transform: scale(0.975);
+  box-shadow:
+    0 6px 16px rgb(35 52 72 / 10%),
+    0 2px 5px rgb(35 52 72 / 6%);
 }
+
+.kiosk-button svg {
+  color: #315a82;
+}
+
+
