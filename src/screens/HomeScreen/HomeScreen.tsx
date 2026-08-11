@@ -138,13 +138,21 @@ export function HomeScreen({ onNavigate }: HomeScreenProps) {
   return (
     <main className="home-screen">
       <header className="home-screen__header">
-        <div>
-          <div className="home-screen__logo">
-            ПОЛЯРНАЯ ЗВЕЗДА
-          </div>
+        <div className="home-screen__brand">
+          <img
+            className="home-screen__brand-logo"
+            src="/log-_-PolZvezda.png"
+            alt="ПОЛЯРНАЯ ЗВЕЗДА"
+          />
 
-          <div className="home-screen__subtitle">
-            Информационный киоск
+          <div>
+            <div className="home-screen__logo">
+              ПОЛЯРНАЯ ЗВЕЗДА
+            </div>
+
+            <div className="home-screen__subtitle">
+              Информационный киоск
+            </div>
           </div>
         </div>
 

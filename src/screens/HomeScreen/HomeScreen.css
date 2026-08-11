@@ -3,9 +3,9 @@
   box-sizing: border-box;
   padding: clamp(24px, 4vw, 48px);
   background:
-    radial-gradient(circle at top right, rgb(255 255 255 / 80%), transparent 38%),
-    linear-gradient(135deg, #eef3f8 0%, #f7f9fb 48%, #e8eef4 100%);
-  color: #172033;
+    radial-gradient(circle at top right, rgb(255 255 255 / 5%), transparent 38%),
+    linear-gradient(135deg, #16171d 0%, #1b1d24 48%, #20232c 100%);
+  color: var(--text-h);
 }
 
 .home-screen__header {
@@ -17,6 +17,19 @@
   margin: 0 auto;
 }
 
+.home-screen__brand {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.home-screen__brand-logo {
+  width: clamp(56px, 6vw, 88px);
+  height: clamp(56px, 6vw, 88px);
+  object-fit: contain;
+  flex-shrink: 0;
+}
+
 .home-screen__logo {
   font-size: clamp(1.25rem, 2.2vw, 2rem);
   font-weight: 800;
@@ -26,7 +39,7 @@
 
 .home-screen__subtitle {
   margin-top: 8px;
-  color: #687386;
+  color: var(--text);
   font-size: clamp(0.95rem, 1.5vw, 1.15rem);
 }
 
@@ -35,9 +48,9 @@
   padding: 14px 20px;
   border: 1px solid rgb(255 255 255 / 90%);
   border-radius: 18px;
-  background: rgb(255 255 255 / 75%);
+  background: var(--bg);
   box-shadow: 0 8px 24px rgb(35 52 72 / 8%);
-  color: #172033;
+  color: var(--text-h);
   font-size: clamp(1.35rem, 2.8vw, 2.25rem);
   font-variant-numeric: tabular-nums;
   font-weight: 700;
@@ -53,7 +66,7 @@
 
 .home-screen__content h1 {
   margin: 0;
-  color: #172033;
+  color: var(--text-h);
   font-size: clamp(2.4rem, 5vw, 4.75rem);
   font-weight: 800;
   line-height: 1.05;
@@ -62,7 +75,7 @@
 
 .home-screen__content p {
   margin: 18px 0 clamp(36px, 5vh, 56px);
-  color: #687386;
+  color: var(--text);
   font-size: clamp(1.15rem, 2vw, 1.6rem);
   line-height: 1.4;
 }
