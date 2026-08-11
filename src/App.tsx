@@ -1,9 +1,18 @@
 import { useState } from 'react';
 import type { Screen } from './types/kiosk';
 import { HomeScreen } from './screens/HomeScreen/HomeScreen';
+import { ScheduleScreen } from './screens/ScheduleScreen/ScheduleScreen';
 
 function App() {
   const [screen, setScreen] = useState<Screen>('home');
+
+  if (screen === 'schedule') {
+    return (
+      <ScheduleScreen
+        onNavigateHome={() => setScreen('home')}
+      />
+    );
+  }
 
   if (screen !== 'home') {
     return (

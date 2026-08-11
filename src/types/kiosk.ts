@@ -29,3 +29,11 @@ export interface MenuSection {
   title: string;
   items: MenuItem[];
 }
+
+export interface ScheduleItem {
+  time: string;
+  endTime: string;
+  subject: string;
+  className: string;
+  room: string;
+}
