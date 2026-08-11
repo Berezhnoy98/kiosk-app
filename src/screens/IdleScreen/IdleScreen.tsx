@@ -8,10 +8,11 @@ interface IdleScreenProps {
 
 export function IdleScreen({ onExit }: IdleScreenProps) {
   const [videoIndex, setVideoIndex] = useState(0);
+  const [failedVideoIds, setFailedVideoIds] = useState<string[]>([]);
   const videoRef = useRef<HTMLVideoElement>(null);
 
   const availableVideos = videos.filter(
-    (video) => video.videoUrl,
+    (video) => video.videoUrl && !failedVideoIds.includes(video.id),
   );
 
   useEffect(() => {
@@ -95,6 +96,29 @@ export function IdleScreen({ onExit }: IdleScreenProps) {
     });
   };
 
+  const handleVideoError = () => {
+    const failedVideo = availableVideos[videoIndex];
+
+    if (!failedVideo) {
+      return;
+    }
+
+    setFailedVideoIds((currentIds) => [
+      ...currentIds,
+      failedVideo.id,
+    ]);
+
+    setVideoIndex((currentIndex) => {
+      if (availableVideos.length <= 1) {
+        return 0;
+      }
+
+      return currentIndex === availableVideos.length - 1
+        ? 0
+        : currentIndex;
+    });
+  };
+
   if (availableVideos.length === 0) {
     return (
       <main className="idle-screen">
@@ -117,6 +141,7 @@ export function IdleScreen({ onExit }: IdleScreenProps) {
         muted
         playsInline
         onEnded={handleEnded}
+        onError={handleVideoError}
         src={currentVideo.videoUrl}
       >
         Ваш браузер не поддерживает воспроизведение видео.
