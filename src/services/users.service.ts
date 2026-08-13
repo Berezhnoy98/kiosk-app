@@ -1,4 +1,4 @@
-import { API_CONFIG } from '../config/api';
+﻿import { API_CONFIG } from '../config/api';
 
 export interface UserItem {
   id: string;
@@ -45,5 +45,28 @@ export const usersService = {
       headers: { 'Content-Type': 'application/json', ...getAuthHeader() },
     });
     if (!res.ok) throw new Error('Failed to delete user');
+  },
+
+  async update(id: string, data: { role?: string; name?: string }) {
+    const res = await fetch(`${API_CONFIG.baseURL}${API_CONFIG.endpoints.users.detail(id)}`, {
+      method: 'PATCH',
+      headers: { 'Content-Type': 'application/json', ...getAuthHeader() },
+      body: JSON.stringify(data),
+    });
+    if (!res.ok) throw new Error('Failed to update user');
+    return res.json();
+  },
+
+  async changePassword(id: string, password: string) {
+    const res = await fetch(`${API_CONFIG.baseURL}${API_CONFIG.endpoints.users.detail(id)}/password`, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json', ...getAuthHeader() },
+      body: JSON.stringify({ password }),
+    });
+    if (!res.ok) {
+      const err = await res.json().catch(() => ({ message: res.statusText }));
+      throw new Error(err.message || 'Failed to change password');
+    }
+    return res.json();
   },
 };

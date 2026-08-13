@@ -380,9 +380,36 @@ export function AdminPanel({
                   <tr key={u.id}>
                     <td>{u.email}</td>
                     <td>{u.name}</td>
-                    <td>{u.role}</td>
+                    <td>
+                      <select value={u.role} onChange={async (e) => {
+                        const newRole = e.target.value;
+                        try {
+                          await import('../../services/users.service').then(m => m.usersService.update(u.id, { role: newRole }));
+                          await fetchUsers();
+                        } catch (err) {
+                          alert('Не удалось изменить роль');
+                        }
+                      }}>
+                        <option value="CANTEEN">CANTEEN</option>
+                        <option value="ADMIN">ADMIN</option>
+                      </select>
+                    </td>
                     <td>
                       <button type="button" className="admin-panel__ghost-button" onClick={async () => {
+                        const pwd = prompt('Введите новый пароль для пользователя (мин. 6 символов):');
+                        if (!pwd) return;
+                        if (!confirm('Сменить пароль для ' + u.email + '?')) return;
+                        try {
+                          await import('../../services/users.service').then(m => m.usersService.changePassword(u.id, pwd));
+                          alert('Пароль изменён');
+                        } catch (err) {
+                          alert('Не удалось изменить пароль');
+                        }
+                      }}>
+                        Сменить пароль
+                      </button>
+
+                      <button type="button" style={{ marginLeft: 8 }} className="admin-panel__ghost-button" onClick={async () => {
                         if (!confirm('Удалить пользователя?')) return;
                         try {
                           await import('../../services/users.service').then(m => m.usersService.delete(u.id));
