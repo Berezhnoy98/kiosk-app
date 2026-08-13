@@ -11,6 +11,7 @@ import { KIOSK_IDLE_TIMEOUT } from './config/kiosk';
 import { AdminLogin } from './components/AdminLogin/AdminLogin';
 import { AdminPanel } from './components/AdminPanel/AdminPanel';
 import { menu as initialMenu } from './data/menu';
+import { authService } from './services/auth.service';
 
 const DEFAULT_NEWS_RSS_URL = 'https://полярнаязвезда.янао.рф/presscenter/news/rss/';
 
@@ -65,27 +66,24 @@ function App() {
     }
   }, [newsSourceUrl]);
 
-  const handleAdminLogin = (
-    login: string,
-    password: string,
-    role: UserRole,
-  ) => {
-    const expectedCredentials: Record<UserRole, { login: string; password: string }> = {
-      admin: { login: 'admin', password: 'admin123' },
-      canteen: { login: 'canteen', password: 'canteen123' },
-    };
+  const handleAdminLogin = async (login: string, password: string) => {
+    try {
+      const res = await authService.login(login, password);
+      if (!res || !res.access_token) return false;
 
-    const expected = expectedCredentials[role];
+      authService.setToken(res.access_token);
 
-    if (login !== expected.login || password !== expected.password) {
+      const role = res.user?.role === 'ADMIN' ? 'admin' : 'canteen';
+      setLoggedRole(role as UserRole);
+      setShowAdminLogin(false);
+      setScreen('home');
+      window.history.pushState(null, '', '/');
+
+      return true;
+    } catch (err) {
+      console.warn('Login failed', err);
       return false;
     }
-
-    setLoggedRole(role);
-    setShowAdminLogin(false);
-    setScreen('home');
-    window.history.pushState(null, '', '/');
-    return true;
   };
 
   useEffect(() => {

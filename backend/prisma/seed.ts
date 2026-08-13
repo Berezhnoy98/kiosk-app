@@ -1,17 +1,21 @@
 import { PrismaClient, UserRole } from '@prisma/client';
+import bcrypt from 'bcryptjs';
 
 const prisma = new PrismaClient();
 
 async function main() {
   console.log('🌱 Seeding database...');
 
-  // Create default users
+  // Create default users (passwords hashed)
+  const adminPasswordHash = bcrypt.hashSync('admin123', 10);
+  const canteenPasswordHash = bcrypt.hashSync('canteen123', 10);
+
   const admin = await prisma.user.upsert({
     where: { email: 'admin@kiosk.local' },
     update: {},
     create: {
       email: 'admin@kiosk.local',
-      password: '$2a$10$N9qo8uLOickgx2ZMRZoMyeIjZAgcg7b3XeKeUxWdeS86E36B5oDIu',
+      password: adminPasswordHash,
       name: 'Administrator',
       role: UserRole.ADMIN,
     },
@@ -22,7 +26,7 @@ async function main() {
     update: {},
     create: {
       email: 'canteen@kiosk.local',
-      password: '$2a$10$N9qo8uLOickgx2ZMRZoMyeIjZAgcg7b3XeKeUxWdeS86E36B5oDIu',
+      password: canteenPasswordHash,
       name: 'Canteen Staff',
       role: UserRole.CANTEEN,
     },
@@ -54,8 +58,8 @@ async function main() {
   }
 
   console.log('✅ Database seeded successfully!');
-  console.log('Admin user:', admin);
-  console.log('Canteen user:', canteen);
+  console.log('Admin user:', admin.email);
+  console.log('Canteen user:', canteen.email);
 }
 
 main()
