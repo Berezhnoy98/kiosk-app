@@ -3,7 +3,7 @@ import { Type } from 'class-transformer';
 
 export class CreateScheduleDto {
   @IsString()
-  title: string;
+  title!: string;
 
   @IsString()
   @IsOptional()
@@ -11,7 +11,7 @@ export class CreateScheduleDto {
 
   @Type(() => Date)
   @IsDate()
-  date: Date;
+  date!: Date;
 
   @IsString()
   @IsOptional()

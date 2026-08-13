@@ -2,13 +2,13 @@ import { IsString, IsNumber, IsBoolean, IsOptional } from 'class-validator';
 
 export class CreateMenuItemDto {
   @IsString()
-  name: string;
+  name!: string;
 
   @IsNumber()
-  price: number;
+  price!: number;
 
   @IsString()
-  category: string;
+  category!: string;
 
   @IsBoolean()
   @IsOptional()

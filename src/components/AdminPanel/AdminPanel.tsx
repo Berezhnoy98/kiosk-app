@@ -76,6 +76,9 @@ export function AdminPanel({
   );
   const [newsSourceDraft, setNewsSourceDraft] = useState(newsSourceUrl);
 
+  const [users, setUsers] = useState<Array<{ id: string; email: string; name: string; role: string; createdAt?: string }>>([]);
+  const [newUser, setNewUser] = useState({ email: '', password: '', name: '', role: 'CANTEEN' });
+
   useEffect(() => {
     setNewsSourceDraft(newsSourceUrl);
   }, [newsSourceUrl]);
@@ -339,6 +342,104 @@ export function AdminPanel({
     );
   }
 
+  async function fetchUsers() {
+    try {
+      const users = await import('../../services/users.service').then(m => m.usersService.getAll());
+      setUsers(users);
+    } catch (err) {
+      // ignore for now
+      console.error('Failed to load users', err);
+    }
+  }
+
+  function renderUsersManager() {
+    return (
+      <div className="admin-panel__settings-card">
+        <p className="admin-panel__eyebrow">Управление пользователями</p>
+        <h2>Пользователи</h2>
+
+        <div className="admin-panel__users-list">
+          <button type="button" className="admin-panel__primary-button" onClick={() => fetchUsers()}>
+            Обновить список
+          </button>
+
+          {users.length === 0 ? (
+            <p>Пользователей не найдено.</p>
+          ) : (
+            <table className="admin-panel__users-table">
+              <thead>
+                <tr>
+                  <th>Email</th>
+                  <th>Имя</th>
+                  <th>Роль</th>
+                  <th>Действия</th>
+                </tr>
+              </thead>
+              <tbody>
+                {users.map((u) => (
+                  <tr key={u.id}>
+                    <td>{u.email}</td>
+                    <td>{u.name}</td>
+                    <td>{u.role}</td>
+                    <td>
+                      <button type="button" className="admin-panel__ghost-button" onClick={async () => {
+                        if (!confirm('Удалить пользователя?')) return;
+                        try {
+                          await import('../../services/users.service').then(m => m.usersService.delete(u.id));
+                          await fetchUsers();
+                        } catch (e) {
+                          alert('Не удалось удалить пользователя');
+                        }
+                      }}>
+                        Удалить
+                      </button>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          )}
+
+          <div className="admin-panel__create-user">
+            <h3>Создать пользователя</h3>
+            <label>
+              Email
+              <input value={newUser.email} onChange={(e) => setNewUser({ ...newUser, email: e.target.value })} />
+            </label>
+            <label>
+              Пароль
+              <input value={newUser.password} type="password" onChange={(e) => setNewUser({ ...newUser, password: e.target.value })} />
+            </label>
+            <label>
+              Имя
+              <input value={newUser.name} onChange={(e) => setNewUser({ ...newUser, name: e.target.value })} />
+            </label>
+            <label>
+              Роль
+              <select value={newUser.role} onChange={(e) => setNewUser({ ...newUser, role: e.target.value as any })}>
+                <option value="CANTEEN">CANTEEN</option>
+                <option value="ADMIN">ADMIN</option>
+              </select>
+            </label>
+            <div className="admin-panel__settings-actions">
+              <button type="button" className="admin-panel__primary-button" onClick={async () => {
+                try {
+                  await import('../../services/users.service').then(m => m.usersService.create(newUser));
+                  setNewUser({ email: '', password: '', name: '', role: 'CANTEEN' });
+                  await fetchUsers();
+                } catch (e) {
+                  alert('Не удалось создать пользователя');
+                }
+              }}>
+                Создать
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   function renderPlaceholder(tab: AdminTab) {
     if (tab === 'news') {
       return role === 'admin' ? renderNewsSettings() : (
@@ -405,9 +506,11 @@ export function AdminPanel({
       <section className="admin-panel__content">
         {activeTab === 'menu'
           ? renderMenuEditor()
-          : activeTab === 'news' && role === 'admin'
-            ? renderNewsSettings()
-            : renderPlaceholder(activeTab)}
+          : activeTab === 'users' && role === 'admin'
+            ? renderUsersManager()
+            : activeTab === 'news' && role === 'admin'
+              ? renderNewsSettings()
+              : renderPlaceholder(activeTab)}
       </section>
     </main>
   );
