@@ -1,6 +1,6 @@
 import type { NewsItem } from '../types/kiosk';
 
-export const news: NewsItem[] = [
+export const fallbackNews: NewsItem[] = [
   {
     id: '1',
     title: 'Подготовка школы к новому учебному году',
@@ -23,3 +23,5 @@ export const news: NewsItem[] = [
       'Опубликована информация о предстоящих мероприятиях и важных событиях школы.',
   },
 ];
+
+export const news = fallbackNews;

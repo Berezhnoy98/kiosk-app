@@ -6,11 +6,14 @@ export type Screen =
   | 'video'
   | 'canteen';
 
+export type UserRole = 'admin' | 'canteen';
+
 export interface NewsItem {
   id: string;
   title: string;
   date: string;
   description: string;
+  link?: string;
 }
 
 export interface ScheduleItem {

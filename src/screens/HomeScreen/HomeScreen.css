@@ -98,6 +98,10 @@
   grid-column: 4 / span 2;
 }
 
+.home-screen__buttons .kiosk-button:nth-child(6) {
+  grid-column: 3 / span 2;
+}
+
 .home-screen__buttons button {
   display: flex;
   min-height: clamp(150px, 17vw, 210px);

@@ -1,9 +1,9 @@
 import { useState } from 'react';
-import { menu } from '../../data/menu';
-import type { MenuDayId } from '../../types/kiosk';
+import type { MenuDay, MenuDayId } from '../../types/kiosk';
 import './CanteenScreen.css';
 
 interface CanteenScreenProps {
+  menu: MenuDay[];
   onNavigateHome: () => void;
 }
 
@@ -146,6 +146,7 @@ function getSectionIcon(title: string) {
 }
 
 export function CanteenScreen({
+  menu,
   onNavigateHome,
 }: CanteenScreenProps) {
   const [selectedDay, setSelectedDay] =
@@ -155,7 +156,7 @@ export function CanteenScreen({
     (day) => day.id === selectedDay,
   );
 
-  const selectedMenu = menu[selectedDayIndex];
+  const selectedMenu = menu[selectedDayIndex] ?? menu[0];
 
   function selectPreviousDay() {
     const previousIndex =

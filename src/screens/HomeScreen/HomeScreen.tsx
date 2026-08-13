@@ -203,6 +203,7 @@ export function HomeScreen({ onNavigate }: HomeScreenProps) {
             <CanteenIcon />
             <span>Столовая</span>
           </KioskButton>
+
         </div>
       </section>
     </main>

@@ -57,13 +57,16 @@
 
 .canteen-screen__title h1 {
   margin: 0;
+  margin-bottom: 8px;
   font-size: 42px;
+  line-height: 1.1;
 }
 
 .canteen-screen__title p {
-  margin-top: 6px;
+  margin: 0;
   color: var(--text);
   font-size: 18px;
+  line-height: 1.4;
 }
 
 .canteen-screen__day-selector {
