@@ -69,7 +69,7 @@ function App() {
   const handleAdminLogin = async (login: string, password: string) => {
     try {
       const res = await authService.login(login, password);
-      if (!res || !res.access_token) return false;
+      if (!res || !res.access_token) return { success: false, message: 'Неверный ответ от сервера' };
 
       authService.setToken(res.access_token);
 
@@ -79,10 +79,12 @@ function App() {
       setScreen('home');
       window.history.pushState(null, '', '/');
 
-      return true;
-    } catch (err) {
+      return { success: true };
+    } catch (err: any) {
       console.warn('Login failed', err);
-      return false;
+      // Try to extract meaningful server message
+      const serverMessage = err?.response?.data?.message || err?.message || 'Ошибка аутентификации';
+      return { success: false, message: serverMessage };
     }
   };
 

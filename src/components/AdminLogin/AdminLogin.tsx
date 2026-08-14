@@ -1,8 +1,13 @@
 import { useState } from 'react';
 import './AdminLogin.css';
 
+interface AdminLoginResult {
+  success: boolean;
+  message?: string;
+}
+
 interface AdminLoginProps {
-  onLogin: (login: string, password: string) => Promise<boolean> | boolean;
+  onLogin: (login: string, password: string) => Promise<AdminLoginResult>;
   onBack: () => void;
 }
 
@@ -23,8 +28,8 @@ export function AdminLogin({ onLogin, onBack }: AdminLoginProps) {
     setLoading(true);
     try {
       const result = await onLogin(login.trim(), password.trim());
-      if (!result) {
-        setError('Неверный логин или пароль');
+      if (!result || !result.success) {
+        setError(result?.message || 'Неверный логин или пароль');
         setLoading(false);
         return;
       }

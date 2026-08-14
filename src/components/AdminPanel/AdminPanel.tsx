@@ -343,12 +343,18 @@ export function AdminPanel({
   }
 
   async function fetchUsers() {
+    if (role !== 'admin') {
+      console.warn('fetchUsers called without admin role');
+      return;
+    }
+
     try {
       const users = await import('../../services/users.service').then(m => m.usersService.getAll());
       setUsers(users);
     } catch (err) {
-      // ignore for now
+      // log and show alert to admin
       console.error('Failed to load users', err);
+      alert('Не удалось загрузить список пользователей: ' + (err?.message || String(err)));
     }
   }
 
@@ -382,20 +388,22 @@ export function AdminPanel({
                     <td>{u.name}</td>
                     <td>
                       <select value={u.role} onChange={async (e) => {
-                        const newRole = e.target.value;
-                        try {
-                          await import('../../services/users.service').then(m => m.usersService.update(u.id, { role: newRole }));
-                          await fetchUsers();
-                        } catch (err) {
-                          alert('Не удалось изменить роль');
-                        }
+                      if (role !== 'admin') { alert('Недостаточно прав'); return; }
+                      const newRole = e.target.value;
+                      try {
+                        await import('../../services/users.service').then(m => m.usersService.update(u.id, { role: newRole }));
+                        await fetchUsers();
+                      } catch (err) {
+                        alert('Не удалось изменить роль: ' + (err?.message || String(err)));
+                      }
                       }}>
-                        <option value="CANTEEN">CANTEEN</option>
-                        <option value="ADMIN">ADMIN</option>
+                      <option value="CANTEEN">CANTEEN</option>
+                      <option value="ADMIN">ADMIN</option>
                       </select>
                     </td>
                     <td>
                       <button type="button" className="admin-panel__ghost-button" onClick={async () => {
+                        if (role !== 'admin') { alert('Недостаточно прав'); return; }
                         const pwd = prompt('Введите новый пароль для пользователя (мин. 6 символов):');
                         if (!pwd) return;
                         if (!confirm('Сменить пароль для ' + u.email + '?')) return;
@@ -403,19 +411,20 @@ export function AdminPanel({
                           await import('../../services/users.service').then(m => m.usersService.changePassword(u.id, pwd));
                           alert('Пароль изменён');
                         } catch (err) {
-                          alert('Не удалось изменить пароль');
+                          alert('Не удалось изменить пароль: ' + (err?.message || String(err)));
                         }
                       }}>
                         Сменить пароль
                       </button>
 
                       <button type="button" style={{ marginLeft: 8 }} className="admin-panel__ghost-button" onClick={async () => {
+                        if (role !== 'admin') { alert('Недостаточно прав'); return; }
                         if (!confirm('Удалить пользователя?')) return;
                         try {
                           await import('../../services/users.service').then(m => m.usersService.delete(u.id));
                           await fetchUsers();
                         } catch (e) {
-                          alert('Не удалось удалить пользователя');
+                          alert('Не удалось удалить пользователя: ' + (e?.message || String(e)));
                         }
                       }}>
                         Удалить
@@ -450,12 +459,13 @@ export function AdminPanel({
             </label>
             <div className="admin-panel__settings-actions">
               <button type="button" className="admin-panel__primary-button" onClick={async () => {
+                if (role !== 'admin') { alert('Недостаточно прав'); return; }
                 try {
                   await import('../../services/users.service').then(m => m.usersService.create(newUser));
                   setNewUser({ email: '', password: '', name: '', role: 'CANTEEN' });
                   await fetchUsers();
                 } catch (e) {
-                  alert('Не удалось создать пользователя');
+                  alert('Не удалось создать пользователя: ' + (e?.message || String(e)));
                 }
               }}>
                 Создать

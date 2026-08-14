@@ -12,7 +12,11 @@ async function main() {
 
   const admin = await prisma.user.upsert({
     where: { email: 'admin@kiosk.local' },
-    update: {},
+    update: {
+      password: adminPasswordHash,
+      name: 'Administrator',
+      role: UserRole.ADMIN,
+    },
     create: {
       email: 'admin@kiosk.local',
       password: adminPasswordHash,
@@ -23,7 +27,11 @@ async function main() {
 
   const canteen = await prisma.user.upsert({
     where: { email: 'canteen@kiosk.local' },
-    update: {},
+    update: {
+      password: canteenPasswordHash,
+      name: 'Canteen Staff',
+      role: UserRole.CANTEEN,
+    },
     create: {
       email: 'canteen@kiosk.local',
       password: canteenPasswordHash,
