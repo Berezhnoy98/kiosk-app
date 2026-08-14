@@ -1,6 +1,11 @@
 export const API_CONFIG = {
   // Vite exposes env vars via import.meta.env
-  baseURL: (import.meta as any).env?.VITE_API_URL || 'http://localhost:3000',
+  // Normalize VITE_API_URL: strip trailing /api if present (common dev proxy value)
+  baseURL: (() => {
+    const raw = (import.meta as any).env?.VITE_API_URL;
+    if (!raw) return 'http://localhost:3000';
+    return String(raw).replace(/\/api\/?$/, '').replace(/\/$/, '');
+  })(),
   timeout: 10000,
   endpoints: {
     // Auth
