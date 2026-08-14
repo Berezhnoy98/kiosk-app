@@ -13,8 +13,21 @@ async function bootstrap() {
     }),
   );
 
+  // Allow Vite dev server origins (5173 default, 5174 if port changed).
+  const frontendUrl = process.env.FRONTEND_URL;
+  const allowedOrigins = frontendUrl
+    ? frontendUrl.split(',').map((s) => s.trim())
+    : ['http://localhost:5173', 'http://localhost:5174'];
+
   app.enableCors({
-    origin: process.env.FRONTEND_URL || 'http://localhost:5173',
+    origin: (origin, callback) => {
+      // allow requests with no origin (like curl/postman)
+      if (!origin) return callback(null, true);
+      if ((allowedOrigins as string[]).indexOf(origin) !== -1) {
+        return callback(null, true);
+      }
+      return callback(new Error('Not allowed by CORS'));
+    },
     credentials: true,
   });
 
