@@ -13,10 +13,21 @@ export interface AuthResponse {
 
 export const authService = {
   async login(email: string, password: string): Promise<AuthResponse> {
-    return apiClient.post<AuthResponse>(API_CONFIG.endpoints.auth.login, {
-      email,
-      password,
+    // Use direct fetch here to avoid issues with apiClient while HMR/cache reconciles
+    const url = `${API_CONFIG.baseURL}${API_CONFIG.endpoints.auth.login}`;
+    const resp = await fetch(url, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email, password }),
+      credentials: 'include',
     });
+
+    if (!resp.ok) {
+      const err = await resp.json().catch(() => ({ message: resp.statusText }));
+      throw new Error(err.message || `Auth error: ${resp.status}`);
+    }
+
+    return resp.json();
   },
 
   async register(
