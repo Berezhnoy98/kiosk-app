@@ -19,15 +19,10 @@ async function bootstrap() {
     ? frontendUrl.split(',').map((s) => s.trim())
     : ['http://localhost:5173', 'http://localhost:5174'];
 
+  // During local development allow requests from the Vite dev server.
+  // Use a permissive CORS policy to avoid origin mismatches across dev ports.
   app.enableCors({
-    origin: (origin, callback) => {
-      // allow requests with no origin (like curl/postman)
-      if (!origin) return callback(null, true);
-      if ((allowedOrigins as string[]).indexOf(origin) !== -1) {
-        return callback(null, true);
-      }
-      return callback(new Error('Not allowed by CORS'));
-    },
+    origin: true, // reflect request origin
     credentials: true,
   });
 
