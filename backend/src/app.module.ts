@@ -11,6 +11,8 @@ import { ScheduleModule } from './schedule/schedule.module';
 import { GalleryModule } from './gallery/gallery.module';
 import { VideoModule } from './video/video.module';
 import { HealthController } from './health/health.controller';
+import { ServeStaticModule } from '@nestjs/serve-static';
+import { join } from 'path';
 
 @Module({
   imports: [
@@ -30,6 +32,10 @@ import { HealthController } from './health/health.controller';
     MenuModule,
     NewsModule,
     ScheduleModule,
+    ServeStaticModule.forRoot({
+      rootPath: join(__dirname, '..', 'uploads'),
+      serveRoot: '/uploads',
+    }),
     GalleryModule,
     VideoModule,
   ],

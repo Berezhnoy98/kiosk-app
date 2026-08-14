@@ -79,6 +79,19 @@ export function AdminPanel({
   const [users, setUsers] = useState<Array<{ id: string; email: string; name: string; role: string; createdAt?: string }>>([]);
   const [newUser, setNewUser] = useState({ email: '', password: '', name: '', role: 'CANTEEN' });
 
+  // Gallery / Video state
+  const [albums, setAlbums] = useState<Array<any>>([]);
+  const [selectedAlbumId, setSelectedAlbumId] = useState<string | null>(null);
+  const [albumTitle, setAlbumTitle] = useState('');
+  const [albumDescription, setAlbumDescription] = useState('');
+  const [uploadFiles, setUploadFiles] = useState<FileList | null>(null);
+
+  const [playlists, setPlaylists] = useState<Array<any>>([]);
+  const [selectedPlaylistId, setSelectedPlaylistId] = useState<string | null>(null);
+  const [playlistTitle, setPlaylistTitle] = useState('');
+  const [playlistDescription, setPlaylistDescription] = useState('');
+  const [uploadVideoFiles, setUploadVideoFiles] = useState<FileList | null>(null);
+
   useEffect(() => {
     setNewsSourceDraft(newsSourceUrl);
   }, [newsSourceUrl]);
@@ -505,6 +518,166 @@ export function AdminPanel({
     );
   }
 
+  // Gallery manager
+  async function fetchAlbums() {
+    try {
+      const res = await import('../../services/gallery.service').then(m => m.galleryService.getAlbums());
+      setAlbums(res);
+      if (res.length > 0 && !selectedAlbumId) setSelectedAlbumId(res[0].id);
+    } catch (err) {
+      console.error('Failed to load albums', err);
+      alert('Не удалось загрузить альбомы: ' + (err?.message || String(err)));
+    }
+  }
+
+  async function handleCreateAlbum() {
+    if (!albumTitle.trim()) return alert('Введите название альбома');
+    try {
+      await import('../../services/gallery.service').then(m => m.galleryService.createAlbum({ title: albumTitle.trim(), description: albumDescription.trim() }));
+      setAlbumTitle(''); setAlbumDescription('');
+      await fetchAlbums();
+    } catch (err) {
+      alert('Не удалось создать альбом: ' + (err?.message || String(err)));
+    }
+  }
+
+  async function handleUploadPhotos() {
+    if (!selectedAlbumId) return alert('Выберите альбом');
+    if (!uploadFiles || uploadFiles.length === 0) return alert('Выберите файлы');
+    try {
+      await import('../../services/gallery.service').then(m => m.galleryService.uploadPhotos(selectedAlbumId as string, uploadFiles));
+      setUploadFiles(null);
+      alert('Файлы загружены');
+    } catch (err) {
+      alert('Ошибка загрузки: ' + (err?.message || String(err)));
+    }
+  }
+
+  function renderGalleryManager() {
+    return (
+      <div className="admin-panel__settings-card">
+        <p className="admin-panel__eyebrow">Галерея</p>
+        <h2>Альбомы</h2>
+
+        <div>
+          <button type="button" className="admin-panel__primary-button" onClick={() => fetchAlbums()}>Обновить альбомы</button>
+        </div>
+
+        <div style={{ marginTop: 12 }}>
+          <label>
+            Название альбома
+            <input value={albumTitle} onChange={(e) => setAlbumTitle(e.target.value)} />
+          </label>
+          <label>
+            Описание
+            <input value={albumDescription} onChange={(e) => setAlbumDescription(e.target.value)} />
+          </label>
+          <div className="admin-panel__settings-actions">
+            <button type="button" className="admin-panel__primary-button" onClick={() => handleCreateAlbum()}>Создать альбом</button>
+          </div>
+        </div>
+
+        <div style={{ marginTop: 16 }}>
+          <h3>Загрузить фотографии</h3>
+          <label>
+            Выберите альбом
+            <select value={selectedAlbumId ?? ''} onChange={(e) => setSelectedAlbumId(e.target.value)}>
+              <option value="">-- выбрать --</option>
+              {albums.map(a => <option key={a.id} value={a.id}>{a.title}</option>)}
+            </select>
+          </label>
+          <label>
+            Файлы
+            <input type="file" multiple accept="image/*" onChange={(e) => setUploadFiles(e.target.files)} />
+          </label>
+          <div className="admin-panel__settings-actions">
+            <button type="button" className="admin-panel__primary-button" onClick={() => handleUploadPhotos()}>Загрузить</button>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  // Video manager
+  async function fetchPlaylists() {
+    try {
+      const res = await import('../../services/video.service').then(m => m.videoService.getPlaylists());
+      setPlaylists(res);
+      if (res.length > 0 && !selectedPlaylistId) setSelectedPlaylistId(res[0].id);
+    } catch (err) {
+      console.error('Failed to load playlists', err);
+      alert('Не удалось загрузить плейлисты: ' + (err?.message || String(err)));
+    }
+  }
+
+  async function handleCreatePlaylist() {
+    if (!playlistTitle.trim()) return alert('Введите название плейлиста');
+    try {
+      await import('../../services/video.service').then(m => m.videoService.createPlaylist({ title: playlistTitle.trim(), description: playlistDescription.trim() }));
+      setPlaylistTitle(''); setPlaylistDescription('');
+      await fetchPlaylists();
+    } catch (err) {
+      alert('Не удалось создать плейлист: ' + (err?.message || String(err)));
+    }
+  }
+
+  async function handleUploadVideo() {
+    if (!selectedPlaylistId) return alert('Выберите плейлист');
+    if (!uploadVideoFiles || uploadVideoFiles.length === 0) return alert('Выберите файлы');
+    try {
+      await import('../../services/video.service').then(m => m.videoService.uploadVideo(selectedPlaylistId as string, uploadVideoFiles));
+      setUploadVideoFiles(null);
+      alert('Видео загружено');
+    } catch (err) {
+      alert('Ошибка загрузки видео: ' + (err?.message || String(err)));
+    }
+  }
+
+  function renderVideoManager() {
+    return (
+      <div className="admin-panel__settings-card">
+        <p className="admin-panel__eyebrow">Видео</p>
+        <h2>Плейлисты</h2>
+
+        <div>
+          <button type="button" className="admin-panel__primary-button" onClick={() => fetchPlaylists()}>Обновить плейлисты</button>
+        </div>
+
+        <div style={{ marginTop: 12 }}>
+          <label>
+            Название плейлиста
+            <input value={playlistTitle} onChange={(e) => setPlaylistTitle(e.target.value)} />
+          </label>
+          <label>
+            Описание
+            <input value={playlistDescription} onChange={(e) => setPlaylistDescription(e.target.value)} />
+          </label>
+          <div className="admin-panel__settings-actions">
+            <button type="button" className="admin-panel__primary-button" onClick={() => handleCreatePlaylist()}>Создать плейлист</button>
+          </div>
+        </div>
+
+        <div style={{ marginTop: 16 }}>
+          <h3>Загрузить видео</h3>
+          <label>
+            Выберите плейлист
+            <select value={selectedPlaylistId ?? ''} onChange={(e) => setSelectedPlaylistId(e.target.value)}>
+              <option value="">-- выбрать --</option>
+              {playlists.map(p => <option key={p.id} value={p.id}>{p.title}</option>)}
+            </select>
+          </label>
+          <label>
+            Файлы
+            <input type="file" multiple accept="video/*,image/*" onChange={(e) => setUploadVideoFiles(e.target.files)} />
+          </label>
+          <div className="admin-panel__settings-actions">
+            <button type="button" className="admin-panel__primary-button" onClick={() => handleUploadVideo()}>Загрузить</button>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <main className="admin-panel">
       <aside className="admin-panel__sidebar">
@@ -547,7 +720,11 @@ export function AdminPanel({
             ? renderUsersManager()
             : activeTab === 'news' && role === 'admin'
               ? renderNewsSettings()
-              : renderPlaceholder(activeTab)}
+              : activeTab === 'gallery' && role === 'admin'
+                ? renderGalleryManager()
+                : activeTab === 'video' && role === 'admin'
+                  ? renderVideoManager()
+                  : renderPlaceholder(activeTab)}
       </section>
     </main>
   );

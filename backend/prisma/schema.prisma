@@ -99,6 +99,53 @@ model Video {
   @@map("videos")
 }
 
+model Album {
+  id          String   @id @default(cuid())
+  title       String
+  description String?
+  photos      Photo[]
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@map("albums")
+}
+
+model Photo {
+  id        String   @id @default(cuid())
+  albumId   String
+  album     Album    @relation(fields: [albumId], references: [id])
+  filename  String
+  url       String
+  caption   String?
+  createdAt DateTime @default(now())
+
+  @@map("photos")
+}
+
+model Playlist {
+  id          String     @id @default(cuid())
+  title       String
+  description String?
+  videos      VideoItem[]
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+
+  @@map("playlists")
+}
+
+model VideoItem {
+  id          String   @id @default(cuid())
+  playlistId  String
+  playlist    Playlist @relation(fields: [playlistId], references: [id])
+  title       String
+  filename    String
+  url         String
+  thumbnail   String?
+  createdAt   DateTime @default(now())
+
+  @@map("video_items")
+}
+
 model AppConfig {
   id           String   @id @default(cuid())
   key          String   @unique
